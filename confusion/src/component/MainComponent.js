@@ -9,6 +9,7 @@ import { PROMOTIONS } from '../shared/promotions';
 import { LEADERS } from '../shared/leaders'
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
+import About from './AboutComponent';
 import {Switch,Route,Redirect, Router} from 'react-router-dom';
 import Contact from './ContactComponent';
 class Main extends Component {
@@ -42,7 +43,7 @@ class Main extends Component {
           />
         );
     }
-
+    //console.log(this.state.leaders);
 
     return (
       <div>
@@ -64,6 +65,12 @@ class Main extends Component {
             exact
             path="/contactus"
             component={Contact}
+          />
+          
+          <Route
+            exact
+            path="/aboutus"
+            component={ () => <About leaders={this.state.leaders}/> }
           />
           
           <Redirect to="/home" />
