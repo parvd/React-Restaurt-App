@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
-import { Navbar, NavbarBrand,  } from 'reactstrap';
 import Home from './HomeComponent';
 import Menu from './MenuComponent';
 import Dishdetail from './DishdetailComponents';
-import { DISHES } from '../shared/dishes';
-import { COMMENTS } from '../shared/comments';
-import { PROMOTIONS } from '../shared/promotions';
-import { LEADERS } from '../shared/leaders';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import About from './AboutComponent';
 import {Switch,Route,Redirect, Router ,withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import Contact from './ContactComponent';
+import { addComment } from '../redux/ActionCreators';
 
 
 const mapStateToProps = state =>{
@@ -23,15 +19,15 @@ const mapStateToProps = state =>{
     leaders: state.leaders
   }
 }
-
+const mapDispatchToprops = dispatch => ({
+  addComment:(dishId,rating,author,comment) => dispatch(addComment(dishId,rating,author,comment))
+})
 class Main extends Component {
 
   constructor(props) {
     super(props);
     
   }
-
-
 
   render() {
     const HomePage =()=> {
@@ -45,9 +41,10 @@ class Main extends Component {
     const DishWithID = ({match}) =>
     {
         return(
-          <Dishdetail dish={this.props.dishes.filter((dish)=>dish.id === parseInt(match.params.dishId,10))[0]}
-                      comments={this.props.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))}
-          />
+          <Dishdetail dish={this.props.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]}
+          comments={this.props.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))}
+          addComment={this.props.addComment}
+      />
         );
     }
     //console.log(this.state.leaders);
@@ -88,4 +85,4 @@ class Main extends Component {
   }
 }
 
-export default withRouter(connect(mapStateToProps)(Main));
+export default withRouter(connect(mapStateToProps,mapDispatchToprops)(Main));
